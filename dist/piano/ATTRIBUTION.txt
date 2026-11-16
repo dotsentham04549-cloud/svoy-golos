@@ -1,0 +1,9 @@
+Salamander Grand Piano samples — Alexander Holm.
+Source: https://github.com/Tonejs/audio/tree/master/salamander
+License: Creative Commons Attribution 3.0
+https://creativecommons.org/licenses/by/3.0/
+
+Local derivatives: nine reference notes converted to mono 32 kHz MP3 at 64 kbps,
+trimmed to eight seconds with a 0.3 second fade at the end.
+The app transposes the nearest reference sample and applies a release envelope.
+Original author notes and license: SOURCE-LICENSE.txt.

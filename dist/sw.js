@@ -1,6 +1,6 @@
-const CACHE='svoy-golos-v5';
+const CACHE='svoy-golos-v6';
 const VOICE_CACHE='svoy-golos-voice-v1';
-const ASSETS=['./','./index.html','./style.css','./app.js','./planner.js','./lessons.js','./voices.js','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./manifest.webmanifest'];
+const ASSETS=['./','./index.html','./style.css','./app.js','./planner.js','./harmony.js','./piano.js','./lessons.js','./voices.js','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./manifest.webmanifest','./piano/C2.mp3','./piano/Fs2.mp3','./piano/C3.mp3','./piano/Fs3.mp3','./piano/C4.mp3','./piano/Fs4.mp3','./piano/C5.mp3','./piano/Fs5.mp3','./piano/C6.mp3'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('svoy-golos-')&&k!==CACHE&&k!==VOICE_CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 async function voiceResponse(request){
