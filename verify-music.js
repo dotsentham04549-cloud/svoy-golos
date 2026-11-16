@@ -3,7 +3,7 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const b={window:{}};vm.createContext(b);for(const f of ['harmony.js','piano.js']){cp.execFileSync(process.execPath,['--check','dist/'+f]);vm.runInContext(fs.readFileSync('dist/'+f,'utf8'),b);}
 const H=b.window.Harmony;assert.equal(H.roots.length*H.types.length,168);
 for(const r of H.roots)for(const t of H.types)for(let inv=0;inv<3;inv++){
- const c=H.chord(r.symbol,t.id,inv);assert.equal(c.notes.length,t.intervals.length);assert.equal(c.names.length,c.notes.length);assert.equal(new Set(c.notes).size,c.notes.length);assert.ok(c.notes.every(n=>Number.isInteger(n)&&n>=0&&n<=127));assert.ok(c.notes.every((n,i)=>!i||n>c.notes[i-1]));
+ const c=H.chord(r.symbol,t.id,inv);assert.equal(c.notes.length,t.intervals.length);assert.equal(c.names.length,c.notes.length);assert.equal(new Set(c.notes).size,c.notes.length);const range=H.keyRange(c.notes);assert.ok(range.start<Math.min(...c.notes)&&range.end>Math.max(...c.notes));assert.ok(![1,3,6,8,10].includes(range.start%12)&&![1,3,6,8,10].includes(range.end%12));assert.ok(c.notes.every(n=>Number.isInteger(n)&&n>=0&&n<=127));assert.ok(c.notes.every((n,i)=>!i||n>c.notes[i-1]));
  assert.deepEqual([...c.notes].map(n=>(n-r.pc+120)%12).sort((a,b)=>a-b),[...t.intervals].map(n=>n%12).sort((a,b)=>a-b));
 }
 assert.equal(H.chord('C','minor').names.join(','),'До,Ми♭,Соль');assert.equal(H.chord('C','dim7').names.join(','),'До,Ми♭,Соль♭,Си♭♭');assert.equal(H.chord('Db','major').names.join(','),'Ре♭,Фа,Ля♭');

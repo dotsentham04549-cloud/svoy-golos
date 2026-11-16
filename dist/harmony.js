@@ -17,5 +17,6 @@ window.Harmony=(()=>{
  {id:'dim7',suffix:'dim7',name:'Уменьшённый септаккорд',intervals:[0,3,6,9],degrees:[0,2,4,6]},
  {id:'m7b5',suffix:'m7♭5',name:'Полууменьшённый септаккорд',intervals:[0,3,6,10],degrees:[0,2,4,6]}];
  function chord(rootId,typeId,inversion=0,octave=3){const root=roots.find(r=>r.symbol===rootId),type=types.find(t=>t.id===typeId);if(!root||!type)throw Error('Unknown chord');const natural=[0,2,4,5,7,9,11],names=['До','Ре','Ми','Фа','Соль','Ля','Си'];let notes=type.intervals.map((n,i)=>{const letter=(root.letter+type.degrees[i])%7,pc=(root.pc+n)%12,delta=((pc-natural[letter]+18)%12)-6;return {midi:12*(octave+1)+root.pc+n,name:names[letter]+(delta>0?'♯'.repeat(delta):'♭'.repeat(-delta))};});for(let i=0;i<Math.min(Math.max(0,inversion),notes.length-1);i++){const first=notes.shift();first.midi+=12;notes.push(first);}notes.sort((a,b)=>a.midi-b.midi);return {symbol:root.symbol+type.suffix,notes:notes.map(n=>n.midi),names:notes.map(n=>n.name),type:type.name};}
- return {roots,types,chord};
+ function keyRange(notes,base=48){const white=n=>[0,2,4,5,7,9,11].includes(((n%12)+12)%12);if(!notes.length)return {start:base,end:base+24};let start=Math.min(...notes),end=Math.max(...notes);do{start--;}while(!white(start));do{end++;}while(!white(end));while(end-start<12){do{start--;}while(!white(start));if(end-start>=12)break;do{end++;}while(!white(end));}return {start,end};}
+ return {roots,types,chord,keyRange};
 })();
