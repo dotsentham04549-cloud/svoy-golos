@@ -1,6 +1,6 @@
-const CACHE='svoy-golos-v4';
+const CACHE='svoy-golos-v5';
 const VOICE_CACHE='svoy-golos-voice-v1';
-const ASSETS=['./','./index.html','./style.css','./app.js','./lessons.js','./voices.js','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./manifest.webmanifest'];
+const ASSETS=['./','./index.html','./style.css','./app.js','./planner.js','./lessons.js','./voices.js','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./manifest.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('svoy-golos-')&&k!==CACHE&&k!==VOICE_CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 async function voiceResponse(request){

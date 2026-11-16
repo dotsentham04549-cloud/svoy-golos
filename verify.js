@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),cp=require('node:child_process');
 const root=__dirname,dist=path.join(root,'dist');
-for(const file of ['app.js','lessons.js','sw.js'])cp.execFileSync(process.execPath,['--check',path.join(dist,file)]);
+for(const file of ['app.js','lessons.js','planner.js','sw.js'])cp.execFileSync(process.execPath,['--check',path.join(dist,file)]);
 const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(dist,'lessons.js'),'utf8'),sandbox);
 const {COURSES,LESSONS}=sandbox.window;
 assert.equal(COURSES.length,4);assert.equal(LESSONS.length,112);assert.equal(new Set(LESSONS.map(x=>x.id)).size,112);

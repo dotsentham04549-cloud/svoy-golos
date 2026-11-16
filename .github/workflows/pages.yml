@@ -22,6 +22,7 @@ jobs:
       - run: git diff --exit-code -- dist/lessons.js
       - run: node verify.js
       - run: node verify-voice.js
+      - run: node verify-plan.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

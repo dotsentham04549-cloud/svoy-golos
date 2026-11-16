@@ -144,11 +144,16 @@ def enrich(courses, lessons, step):
         ls=[l for l in lessons if l['course']==c['id']]
         if c['id']=='piano':
             byid={l['id']:l for l in ls};ls=[byid[f'piano-{n}'] for n in piano_order]
-        elif c['id'] in ('speech','vocal'):
-            # Baseline before the original starter path, followed by deeper work.
-            ls=[ls[12]]+ls[:12]+ls[13:]
+        elif c['id'] in ('speech','vocal','music'):
+            routes={
+              'speech':[13,1,2,3,14,15,4,5,6,16,17,18,7,8,9,19,20,21,10,11,12,22,23,24],
+              'vocal':[13,1,2,14,3,15,4,16,5,17,6,18,7,19,8,20,9,21,10,22,11,23,12,24],
+              'music':[1,2,3,4,9,10,11,12,5,6,7,13,8,14,15,16]}
+            byid={l['id']:l for l in ls}
+            ls=[byid[f"{c['id']}-{n}"] for n in routes[c['id']]]
         for j,l in enumerate(ls):
             l['position']=j+1
+            l['block']=j//(len(ls)//4)
             l['previous']=ls[j-1]['id'] if j else None
         ordered.extend(ls)
         c['duration']='6–18 мин' if c['id'] in ('speech','vocal') else '5–9 мин'
