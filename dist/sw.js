@@ -1,4 +1,4 @@
-const CACHE='svoy-golos-v3';
+const CACHE='svoy-golos-v4';
 const VOICE_CACHE='svoy-golos-voice-v1';
 const ASSETS=['./','./index.html','./style.css','./app.js','./lessons.js','./voices.js','./icon.svg','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./manifest.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));

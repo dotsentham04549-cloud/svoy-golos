@@ -1,5 +1,7 @@
 name: Publish to GitHub Pages
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -16,7 +18,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
+      - run: python3 make_lessons.py
+      - run: git diff --exit-code -- dist/lessons.js
       - run: node verify.js
+      - run: node verify-voice.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

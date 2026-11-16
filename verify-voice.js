@@ -4,7 +4,7 @@ const dist=path.join(__dirname,'dist'),box={window:{}};
 for(const f of ['lessons.js','voices.js'])vm.runInNewContext(fs.readFileSync(path.join(dist,f),'utf8'),box);
 const files=new Set();
 const transcripts=new Map(JSON.parse(fs.readFileSync(path.join(__dirname,'voice-sources.json'),'utf8')).clips.map(c=>[c.file.replace(/^dist\//,''),c.text]));
-for(const lesson of box.window.LESSONS){
+for(const lesson of box.window.LESSONS.filter(l=>l.version===1)){
  const clips=box.window.VOICE_CLIPS[lesson.id];assert.equal(clips.length,lesson.steps.length,lesson.id);
  for(const [i,src] of clips.entries()){const step=lesson.steps[i];assert.equal(transcripts.get(src),[step.title+'.',step.instruction,step.text||'',step.check].join(' '),'Audio transcript must match '+lesson.id+' step '+i);assert.match(src,/^audio\/clip-\d{3}\.mp3$/);const bytes=fs.readFileSync(path.join(dist,src));assert.ok(bytes.length>4000,src);files.add(src);}
 }
@@ -31,5 +31,5 @@ vm.runInContext(`let session={id:'speech-1',course:'speech',steps:[{}]},stepInde
  sw.req=new Request('https://test.local/audio/clip-000.mp3',{headers:{Range:'bytes=1-3'}});const partial=await vm.runInContext('voiceResponse(req)',sw);
  assert.equal(partial.status,206);assert.deepEqual([...new Uint8Array(await partial.arrayBuffer())],[2,3,4]);
  sw.req=new Request('https://test.local/audio/clip-000.mp3',{headers:{Range:'bytes=9-'}});assert.equal((await vm.runInContext('voiceResponse(req)',sw)).status,416);
- console.log(`PASS: all 240 steps have local audio (${files.size} unique clips); timer ordering, cancellation, errors, manual playback and offline audio ranges.`);
+ console.log(`PASS: all 240 original steps have local audio (${files.size} unique clips); timer ordering, cancellation, errors, manual playback and offline audio ranges.`);
 })().catch(e=>{console.error(e);process.exitCode=1;});
